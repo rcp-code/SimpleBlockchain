@@ -23,6 +23,7 @@ type Blockchain struct {
 	Balances map[string]float64 // Mapa para mantener los saldos de las cuentas
 }
 
+// Calcula el hash a partir del bloque anterior
 func (b *Bloque) CalculaHash() string {
 	//Se concatenan todos los campos del bloque
 	bytesTransacciones, _ := json.Marshal(b.Transacciones)
