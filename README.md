@@ -1,6 +1,6 @@
 # Simple Blockchain
 
-Una implementación simple de Blockchain en Go.
+Una implementación simple de Blockchain en Go como aprendizaje de este lenguage de programación.
 
 ### Cómo ejecutar el proyecto
 Será necesario descargar el fichero `SimpleBlockchain.exe` y ejecutarlo. Al hacerlo se abrirá una ventana de Terminal. A continuación, abre una nueva pestaña, o una nueva ventana, y sigue las siguientes instrucciones (o pasos). En caso de querer realizar otras operaciones con los usuarios existentes (user1 y user2) solo habría que modificar los valores correspondientes.
