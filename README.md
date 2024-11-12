@@ -1,6 +1,10 @@
 # ⛓ Blockchain en Go ⛓
 
+<<<<<<< HEAD
 Una implementación de una blockchain básica en Go diseñada para demostrar los principios fundamentales de una cadena de bloques, como transacciones, minería, y verificación de saldos. Este proyecto sirve como una introducción al desarrollo de blockchain y proporciona una base sólida para expandir sus capacidades.
+=======
+Una implementación simple de Blockchain en Go como aprendizaje de este lenguage de programación.
+>>>>>>> 306e6a7158e4951de8199bde403d60ed0ce07a7e
 
 ## ✅ Requisitos Previos
 
@@ -101,6 +105,7 @@ Si encuentras problemas, revisa los siguientes puntos:
 
 ***
 
+<<<<<<< HEAD
 ## 🛠 Futuras Mejoras
 
 A continuación, algunos planes de desarrollo que pueden llevar este proyecto a un siguiente nivel:
@@ -116,3 +121,11 @@ A continuación, algunos planes de desarrollo que pueden llevar este proyecto a 
 ## ⁉ Dudas y sugerencias
 
 Si tienes preguntas o necesitas ayuda para ejecutar el proyecto, ¡estoy aquí para ayudarte! Puedes abrir una *issue* en el repositorio describiendo tu problema o pregunta, y responderé lo antes posible. Si además tienes sugerencias para mejorar el proyecto, no dudes en compartirlas.
+=======
+### Futuras implementaciones
+- Añadir validación de la cadena completa.
+- Implementar ajuste dinámico de dificultad.
+- Agregar límite de transacciones por bloque.
+- Implementar sistema de nodos y consenso.
+- Agregar firmas digitales para las transacciones.
+>>>>>>> 306e6a7158e4951de8199bde403d60ed0ce07a7e
