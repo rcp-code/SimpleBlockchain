@@ -9,21 +9,21 @@ import (
 
 // API REST handlers
 
-type Servidor struct {
-	Bc     *Blockchain
+type APIServidor struct {
+	bc     *Blockchain
 	Router *mux.Router
 }
 
-func NuevoServidor(bc *Blockchain) *Servidor {
-	s := &Servidor{
-		Bc:     bc,
+func NuevoServidor(bc *Blockchain) *APIServidor {
+	s := &APIServidor{
+		bc:     bc,
 		Router: mux.NewRouter(),
 	}
 	s.routes()
 	return s
 }
 
-func (s *Servidor) routes() {
+func (s *APIServidor) routes() {
 	s.Router.HandleFunc("/blocks", s.handleGetBloques).Methods("GET")
 	s.Router.HandleFunc("/mine", s.handleMineriaBloques).Methods("POST")
 	s.Router.HandleFunc("/transaction", s.handleNuevaTransaccion).Methods("POST")
@@ -31,11 +31,11 @@ func (s *Servidor) routes() {
 	s.Router.HandleFunc("/pending", s.handleObtieneTransaccionesPendientes).Methods("GET")
 }
 
-func (s *Servidor) handleGetBloques(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(s.Bc.Bloques)
+func (s *APIServidor) handleGetBloques(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(s.bc.bloques)
 }
 
-func (s *Servidor) handleMineriaBloques(w http.ResponseWriter, r *http.Request) {
+func (s *APIServidor) handleMineriaBloques(w http.ResponseWriter, r *http.Request) {
 	var direccionMinado struct {
 		Direccion string `json:"address"`
 	}
@@ -43,7 +43,7 @@ func (s *Servidor) handleMineriaBloques(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	nuevoBloque, err := s.Bc.TransaccionesPendientesDeMinería(direccionMinado.Direccion)
+	nuevoBloque, err := s.bc.TransaccionesPendientesDeMinería(direccionMinado.Direccion)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -51,26 +51,26 @@ func (s *Servidor) handleMineriaBloques(w http.ResponseWriter, r *http.Request) 
 	json.NewEncoder(w).Encode(nuevoBloque)
 }
 
-func (s *Servidor) handleNuevaTransaccion(w http.ResponseWriter, r *http.Request) {
+func (s *APIServidor) handleNuevaTransaccion(w http.ResponseWriter, r *http.Request) {
 	var trans Transaccion
 	if err := json.NewDecoder(r.Body).Decode(&trans); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	if err := s.Bc.AgregaTransaccion(trans); err != nil {
+	if err := s.bc.AgregaTransaccion(trans); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (s *Servidor) handleObtieneBalance(w http.ResponseWriter, r *http.Request) {
+func (s *APIServidor) handleObtieneBalance(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	direccion := vars["address"]
-	balance := s.Bc.Balances[direccion]
+	balance := s.bc.balances[direccion]
 	json.NewEncoder(w).Encode(map[string]float64{"balance": balance})
 }
 
-func (s *Servidor) handleObtieneTransaccionesPendientes(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(s.Bc.TransaccionesPendientes)
+func (s *APIServidor) handleObtieneTransaccionesPendientes(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(s.bc.transaccionesPendientes)
 }

@@ -1,55 +1,118 @@
-# Simple Blockchain
+# ⛓ Blockchain en Go ⛓
 
-Una implementación simple de Blockchain en Go.
+Una implementación de una blockchain básica en Go diseñada para demostrar los principios fundamentales de una cadena de bloques, como transacciones, minería, y verificación de saldos. Este proyecto sirve como una introducción al desarrollo de blockchain y proporciona una base sólida para expandir sus capacidades.
 
-### Cómo ejecutar el proyecto
-Será necesario descargar el fichero `SimpleBlockchain.exe` y ejecutarlo. Al hacerlo se abrirá una ventana de Terminal. A continuación, abre una nueva pestaña, o una nueva ventana, y sigue las siguientes instrucciones (o pasos). En caso de querer realizar otras operaciones con los usuarios existentes (user1 y user2) solo habría que modificar los valores correspondientes.
+## ✅ Requisitos Previos
 
-##### Creación de nuevas transacciones:
+- **Go** (versión 1.16 o superior): Puedes descargarlo desde [golang.org](https://go.dev/dl/).
+- **cURL** (opcional): Para hacer solicitudes HTTP desde la terminal, aunque también puedes usar herramientas como Postman o directamente el navegador.
 
-*El usuario 1 hace una transferencia al usuario 2:*
+## 📂 Cómo ejecutar el proyecto
 
-    curl -Method Post -Uri http://localhost:8080/transaction -Headers @{"Content-Type"="application/json"} -Body '{"from":"user1","to":"user2","amount":10}'
+1. **Clona este repositorio en tu entorno local:**
+   ```bash
+   git clone https://github.com/rcp-code/SimpleBlockchain
+   ```
 
-*El usuario 2 hace una transferencia al usuario 1:*
+2. **Accede a la carpeta raíz del proyecto y compila el código:**
+   ```bash
+   cd SimpleBlockchain
+   go build cmd/main.go
+   ```
 
-    curl -Method Post -Uri http://localhost:8080/transaction -Headers @{"Content-Type"="application/json"} -Body '{"from":"user2","to":"user2","amount":15}'
+   Esto generará un archivo ejecutable `main.exe` (o `main` en Linux/Mac) que puedes ejecutar para interactuar con la blockchain.
 
-##### Ver transacciones pendientes:
+## 🔛 Uso del Proyecto
 
-    curl http://localhost:8080/pending
+Con el proyecto ejecutándose, puedes realizar las siguientes acciones mediante `curl` o desde tu navegador web.
 
-Para observar con claridad cuáles son las transferencias pendientes también es posible abrir la url en el navegador: `http://localhost:8080/pending`.
+### 1. Crear nuevas transacciones:
 
-##### Minería de un bloque:
+**Transferencias entre usuarios**.
 
-    curl -Method Post -Uri http://localhost:8080/mine -Headers @{"Content-Type"="application/json"} -Body '{"address":"miner1"}'
+- *El usuario 1 hace una transferencia al usuario 2:*
+```bash
+curl -Method Post -Uri http://localhost:8080/transaction -Headers @{"Content-Type"="application/json"} -Body '{"from":"user1","to":"user2","amount":10}'
+```
 
-##### Obtención de los bloques existentes:
+- *El usuario 2 hace una transferencia al usuario 1:*
+```bash
+curl -Method Post -Uri http://localhost:8080/transaction -Headers @{"Content-Type"="application/json"} -Body '{"from":"user2","to":"user2","amount":15}'
+```
 
-    curl http://localhost:8080/blocks
+### 2. Ver transacciones pendientes
 
-En caso de querer observar con mayor claridad cuáles son los bloques existentes, tenemos la posibilidad de abrir la url en el navegador: `http://localhost:8080/blocks`.
+Consulta las transacciones que están pendientes de ser minadas:
 
-##### Obtención del saldo de una cuenta:
+```bash
+curl http://localhost:8080/pending
+```
 
-*Se obtiene el saldo del usuario 1:*
+**Respuesta esperada:**
+```json
+[
+    {"from": "user1", "to": "user2", "amount": 10},
+    {"from": "user2", "to": "user1", "amount": 15}
+]
+```
 
-    curl http://localhost:8080/balance/user1
+También puedes visualizar las transacciones pendientes en `http://localhost:8080/pending`.
 
-*Se obtiene el saldo del usuario 2:*
+### 3. Minar un bloque
 
-    curl http://localhost:8080/balance/user2
+Procesa las transacciones pendientes y agrega un bloque a la cadena:
 
-Si se quisiera ver mejor cuáles son los saldos de cada uno de los usuarios, se podría colocar solo la url en el navegador: `http://localhost:8080/balance/user1` y `http://localhost:8080/balance/user2`.
+```bash
+curl -Method Post -Uri http://localhost:8080/mine -Headers @{"Content-Type"="application/json"} -Body '{"address":"miner1"}'
+```
 
-Para finalizar el programa solo es necesario cerrar la ventana del Terminal.
+### 4. Ver la cadena de bloques
+
+Obtén la lista de todos los bloques de la cadena:
+
+```bash
+curl http://localhost:8080/blocks
+```
+
+Puedes acceder desde tu navegador en `http://localhost:8080/blocks` para ver el historial de bloques.
+
+### 5. Consultar el saldo de una cuenta
+
+Verifica el saldo de un usuario:
+
+- **Saldo de Usuario 1:**
+   ```bash
+   curl http://localhost:8080/balance/user1
+   ```
+
+   **Respuesta esperada:**
+   ```json
+   {"user": "user1", "balance": 25}
+   ```
+
+O abre la URL en tu navegador (`http://localhost:8080/balance/user1`) para ver los saldos.
+
+## ❌ Posibles Errores
+
+Si encuentras problemas, revisa los siguientes puntos:
+
+- **Puerto en uso:** Asegúrate de que el puerto `8080` esté libre antes de ejecutar el proyecto.
+- **Compilación fallida:** Revisa que Go esté correctamente instalado y configurado en tu `PATH`.
 
 ***
 
-### Futuras implementaciones
-- Añadir validación de la cadena completa.
-- Implementar ajuste dinámico de dificultad.
-- Agregar límite de transacciones por bloque.
-- Implementar sistema de nodos y consenso.
-- Agregar firmas digitales para las transacciones.
+## 🛠 Futuras Mejoras
+
+A continuación, algunos planes de desarrollo que pueden llevar este proyecto a un siguiente nivel:
+
+- **Validación completa de la cadena:** Asegurar la integridad de todos los bloques.
+- **Ajuste dinámico de la dificultad de minería:** Adaptar la dificultad basada en la tasa de generación de bloques.
+- **Límite de transacciones por bloque:** Implementar un tamaño máximo de transacciones por bloque.
+- **Sistema de nodos y consenso:** Permitir la comunicación entre múltiples nodos para lograr consenso.
+- **Firmas digitales:** Añadir autenticación de transacciones mediante criptografía.
+
+***
+
+## ⁉ Dudas y sugerencias
+
+Si tienes preguntas o necesitas ayuda para ejecutar el proyecto, ¡estoy aquí para ayudarte! Puedes abrir una *issue* en el repositorio describiendo tu problema o pregunta, y responderé lo antes posible. Si además tienes sugerencias para mejorar el proyecto, no dudes en compartirlas.
